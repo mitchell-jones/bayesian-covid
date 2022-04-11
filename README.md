@@ -11,5 +11,5 @@ Sample DAG:
 -DAG Here-
 
 ### Similar Works Include:
-- [A Bayesian Mixture Model for Predicting the COVID-19 Related Mortality in the United States] (https://www.ajtmh.org/view/journals/tpmd/104/4/article-p1484.xml)
+- [A Bayesian Mixture Model for Predicting the COVID-19 Related Mortality in the United States](https://www.ajtmh.org/view/journals/tpmd/104/4/article-p1484.xml)
 - [Inferring the effectiveness of government interventions against COVID-19](https://www.science.org/doi/10.1126/science.abd9338)

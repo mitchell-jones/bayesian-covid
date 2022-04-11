@@ -6,7 +6,7 @@ This project uses bayesian methods to understand the casual influence of public 
 
 Motivated analysis includes thinking carefully about influences and confounding variables in understanding both the direct and indirect effect of some of these causal factors. To approach this, we will construct several Directed Acyclic Graphs (DAGs) with the help of [Daggity.net](daggity.net) to build our model from a causal-first approach.
 
-Sample DAG:
+### Sample DAG:
 
 -DAG Here-
 

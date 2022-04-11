@@ -1,5 +1,5 @@
 # Bayesian Exploration of Casual Influences on State-Level Covid-19 Outcomes (DSBA 6010)
-This repository and project is part of a group project with [Jan Mooney](https://www.linkedin.com/in/jantmooney/)
+This repository and project is part of a group project with [Jan Mooney](https://www.linkedin.com/in/jantmooney/).
 
 ### Motivations
 This project uses bayesian methods to understand the casual influence of public policy actions on the different outcomes of Covid-19 in different states. Some of these casual factors include mask mandates and the proportion of adults aged 18 or greater that are at risk for Covid-19. Understanding how states distances from each other influences Covid-19 outcome is also of great interest to us.

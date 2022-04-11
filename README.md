@@ -8,7 +8,7 @@ Motivated analysis includes thinking carefully about influences and confounding 
 
 ### Sample DAG:
 
--DAG Here-
+https://github.com/mitchell-jones/bayesian-covid/blob/main/images/Sample%20DAG.png
 
 ### Similar Works Include:
 - [A Bayesian Mixture Model for Predicting the COVID-19 Related Mortality in the United States](https://www.ajtmh.org/view/journals/tpmd/104/4/article-p1484.xml)

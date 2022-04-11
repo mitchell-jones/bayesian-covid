@@ -2,7 +2,7 @@
 This repository and project is part of a group project with [Jan Mooney](https://www.linkedin.com/in/jantmooney/).
 
 ### Motivations
-This project uses bayesian methods to understand the casual influence of public policy actions on the different outcomes of Covid-19 in different states. Some of these casual factors include mask mandates and the proportion of adults aged 18 or greater that are at risk for Covid-19. Understanding how states distances from each other influences Covid-19 outcome is also of great interest to us.
+This project uses bayesian methods to understand the casual influence of public policy actions on the different outcomes of Covid-19 in different states. Some of these casual factors include vaccine mandates and the proportion of adults aged 18 or greater that are at risk for Covid-19. Understanding how states distances from each other influences Covid-19 outcome is also of great interest to us.
 
 Motivated analysis includes thinking carefully about influences and confounding variables in understanding both the direct and indirect effect of some of these causal factors. To approach this, we will construct several Directed Acyclic Graphs (DAGs) with the help of [daggity.net](http://www.dagitty.net/) to build our model from a causal-first approach.
 

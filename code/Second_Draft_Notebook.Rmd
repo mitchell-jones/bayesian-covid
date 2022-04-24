@@ -1,0 +1,125 @@
+---
+title: "Second Draft Model - DSBA 6010"
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
+---
+```{r}
+library(here)
+here()
+# Working on trying to figure out how to use here()
+```
+
+#### Setting environment and packages:
+```{r}
+setwd("C:/Users/Mitchell Gaming PC/OneDrive - Visual Risk IQ, LLC/School Files/Spring 2022/Bayesian Stats/Actual Semester Project/Datasources")
+library(rethinking)
+set_cmdstan_path("C:/Users/Mitchell Gaming PC/Documents/.cmdstanr/cmdstan-2.28.2/cmdstan-2.28.2")
+library(dagitty)
+library(readr)
+```
+#### Loading the data:
+```{r}
+data <- read_csv('First_Draft_Data.csv')
+```
+#### Drawing an Initial DAG
+```{r echo=TRUE}
+g<- dagitty('dag {
+bb="0,0,1,1"
+"Proximity to Other States" [latent,pos="0.551,0.143"]
+"incident rate" [outcome,pos="0.847,0.370"]
+"proportion of >18 at risk" [pos="0.555,0.629"]
+"status of vaccine mandate" [exposure,pos="0.304,0.375"]
+"Proximity to Other States" -> "incident rate"
+"proportion of >18 at risk" -> "incident rate"
+"proportion of >18 at risk" -> "status of vaccine mandate"
+"status of vaccine mandate" -> "incident rate"
+}')
+plot(g)
+```
+#### Standardizing data and putting it into dat list:
+```{r}
+data$R <- standardize(data['At-risk adults, as a share of all adults ages 18 and older'])
+data$I <- standardize(data['Incident_Rate'])
+data$V <- ifelse(data['Any Mandate in Place?']=="Yes", 1 , ifelse(data['Any Mandate in Place?']=="Prohibited" , 3 ,  2))
+
+dat <- list(
+  R = data$R,
+  I = data$I,
+  V = as.integer(data$V))
+```
+### Justifying Priors
+Outcome:
+Normally distributed Incident Rate (Number of Covid-19 Cases per 1000 population)
+
+#### At Risk Adults:
+Justified by prior scientific study of at-risk individuals in the United States by possession of 1 or more chronic conditions. Found that ~50% of Americans suffer, according to (https://www.cdc.gov/pcd/issues/2020/20_0130.htm#T1_down)
+
+#### Vaccine Mandates
+Index variable encoding:
+
+1: 'No' Mandate.
+
+2: 'Prohibited' legally from creating a mandate in this state
+
+3: 'Yes' that a mandate has been enacted
+
+### Initial Model Fit to Data (Will Sample Priors from Here)
+```{r}
+m1 <- ulam(
+  alist(
+    I ~ dnorm( mu , sigma ),
+    mu <- a[V],
+    a[V] ~ dnorm( 0 , 1 ),
+    sigma ~ dexp(1)
+  ), data=dat , chains=4 , log_lik=TRUE )
+```
+### Prior Predictive Check
+```{r echo=TRUE}
+prior <- extract.prior(m1)
+prior$yes<-prior$a[,1]
+prior$no<-prior$a[,2]
+prior$prohibited<-prior$a[,3]
+dens(prior$yes, lwd=4, col="blue", xlab="Total Effect of Mandate", xlim = c(-3, 3))
+abline( v=0, lty=3)
+dens(prior$no, lwd=4, col="red", add = TRUE)
+dens(prior$prohibited, lwd=4, col="dark green", add = TRUE)
+legend("topleft",
+       c("Yes","No","Prohibited"),
+       fill=c("blue","red","dark green"))
+```
+##### Implication of this prior:
+Width: We hypothesized that the incidence would have some (moderate degree of) variability whether they did, did not have, or prohibited a mandate.
+
+Index: The hypothesis illustrated here indicates that mandates would be associated with a similar distribution of incident rates. i.e., "Mandates don't do much to help"
+
+Question: Could we set different priors for each level of the index variable?
+
+#### Diagnostics: trace and rank plots
+```{r echo=TRUE}
+traceplot(m1)
+
+trankplot(m1)
+
+precis(m1, depth = 2)
+
+postcheck(m1)
+```
+
+#### Visualizing Total Effect of Mandate
+```{r echo=TRUE}
+post1 <- extract.samples(m1)
+post1$yes<-post1$a[,1]
+post1$no<-post1$a[,2]
+post1$prohibited<-post1$a[,3]
+dens(post1$yes, lwd=4, col="blue", xlab="Total Effect of Mandate", xlim = c(-1.5, 1.5))
+abline( v=0, lty=3)
+dens(post1$no, lwd=4, col="red", add = TRUE)
+dens(post1$prohibited, lwd=4, col="dark green", add = TRUE)
+legend("topleft",
+       c("Yes","No","Prohibited"),
+       fill=c("blue","red","dark green"))
+```
+
